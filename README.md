@@ -1,7 +1,6 @@
 A demostration of my work done.
 
-
-![architect diagram](https://github.com/SamCheng26/terraform-aws-test/assets/65500466/04e5dfb8-8da1-4717-bb41-921a24314258)
+![architect diagram](https://github.com/SamCheng26/terraform-test/assets/65500466/3e0aaffd-697e-46c9-ab1c-0d02abdeae1d)
 
 
 Deploy EC2 instances in multiple AZs using Auto Scaling Groups, with an INTERMAL Application Load Balancer and ACM.
@@ -9,19 +8,29 @@ Deploy EC2 instances in multiple AZs using Auto Scaling Groups, with an INTERMAL
 What will be deployed:
   
 1. VPC
-Subnets:
-private-subnet-1, private-subnet-2,
-rds-subnet-1, rds-subnet-2, rds-subnet-3,
-public-subnet (for basion host and verification purpose),
-route-table, route-table-association
+Name = "${lower(var.app_name)}-${lower(var.app_environment)}-vpc
 
-3. ASG
-asg-web, asg-app
-launch-configuration for asg-web, launch-configuration for asg-app
+Subnets:
+private-subnet-1 
+private-subnet-2 
+rds-subnet-1
+rds-subnet-2
+rds-subnet-3
+public-subnet (for basion host and verification purpose)
+
+route-table
+route-table-association
+
+2. ASG
+asg-web 
+asg-app
+launch-configuration for asg-web
+launch-configuration for asg-app
 #both ASG are crossing two AZs. 
 
-4. ALB
-ALB-Web #internal ALB, ALB-App #internal ALB
+3. ALB
+ALB-Web #internal ALB.
+ALB-App #internal ALB
 Register DNS Records in Route 53
 Create an SSL certificate using AWS Certificate Manager
   
