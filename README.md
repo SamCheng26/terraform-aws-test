@@ -9,8 +9,6 @@ Deploy EC2 instances in multiple AZs using Auto Scaling Groups, with an INTERMAL
 What will be deployed:
   
 1. VPC
-Name = "${lower(var.app_name)}-${lower(var.app_environment)}-vpc
-
 Subnets:
 private-subnet-1 
 private-subnet-2 
