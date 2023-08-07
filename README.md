@@ -29,17 +29,17 @@ Register DNS Records in Route 53,
 Create an SSL certificate using AWS Certificate Manager
   
 
-5. Session Manager:
+4. Session Manager:
 IAM profile for SSM.
 Associate the profile with ASG instances by specifying the profile in LC.
 Use AMI with SSM Agent pre-installed. Otherwise, install the agent in userdata.    
 
-6. AWS Backup (Run after the main resources were created.):
+5. AWS Backup (Run after the main resources were created.):
 Run after the ASG/RDS are created. To backup EBS and DB.
 
-7. CloudWatch Monitoring:
+6. CloudWatch Monitoring:
 Alarm for high cpu.
 Autoscaling policy -scale if alarm is triggered.
 
-8. ASG Scheduler (Run after the main resources were created.):
+7. ASG Scheduler (Run after the main resources were created.):
 Ensure both ASG have 0 instances running after 6pm during weekday and whole weekends. 
