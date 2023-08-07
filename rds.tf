@@ -7,8 +7,8 @@ resource "aws_db_instance" "default" {
   engine                      = "mysql"
   engine_version              = "5.7"
   #name                        = "mydb"
-  username                    = "admin"
-  password                    = "admin1234"
+  username                    = var.db-username
+  password                    = var.db-password
   backup_retention_period     = 1
   allow_major_version_upgrade = false
   apply_immediately           = false

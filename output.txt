@@ -1,0 +1,1433 @@
+data.aws_route53_zone.public-zone: Reading...
+data.aws_ami.amazon-linux-2022: Reading...
+data.aws_ami.amazon-linux-2: Reading...
+data.aws_vpc.default: Reading...
+data.aws_ami.amazon-linux-2022: Read complete after 0s [id=ami-059b01eb1dee1e15c]
+data.aws_vpc.default: Read complete after 0s [id=vpc-09e6246f]
+data.aws_ami.amazon-linux-2: Read complete after 0s [id=ami-0e3c27023e862efdd]
+data.aws_route53_zone.public-zone: Read complete after 2s [id=Z07661182BIQS4UWCLXY9]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_acm_certificate.alb-web-certificate will be created
+  + resource "aws_acm_certificate" "alb-web-certificate" {
+      + arn                       = (known after apply)
+      + domain_name               = "internallb.samhotpot.com"
+      + domain_validation_options = [
+          + {
+              + domain_name           = "internallb.samhotpot.com"
+              + resource_record_name  = (known after apply)
+              + resource_record_type  = (known after apply)
+              + resource_record_value = (known after apply)
+            },
+        ]
+      + id                        = (known after apply)
+      + key_algorithm             = (known after apply)
+      + not_after                 = (known after apply)
+      + not_before                = (known after apply)
+      + pending_renewal           = (known after apply)
+      + renewal_eligibility       = (known after apply)
+      + renewal_summary           = (known after apply)
+      + status                    = (known after apply)
+      + subject_alternative_names = [
+          + "internallb.samhotpot.com",
+        ]
+      + tags                      = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-web-certificate"
+        }
+      + tags_all                  = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-web-certificate"
+        }
+      + type                      = (known after apply)
+      + validation_emails         = (known after apply)
+      + validation_method         = "DNS"
+    }
+
+  # aws_acm_certificate_validation.asg-certificate-validation will be created
+  + resource "aws_acm_certificate_validation" "asg-certificate-validation" {
+      + certificate_arn         = (known after apply)
+      + id                      = (known after apply)
+      + validation_record_fqdns = (known after apply)
+    }
+
+  # aws_alb_listener.alb-web-listener-https will be created
+  + resource "aws_alb_listener" "alb-web-listener-https" {
+      + arn               = (known after apply)
+      + certificate_arn   = (known after apply)
+      + id                = (known after apply)
+      + load_balancer_arn = (known after apply)
+      + port              = 443
+      + protocol          = "HTTPS"
+      + ssl_policy        = (known after apply)
+      + tags_all          = (known after apply)
+
+      + default_action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+    }
+
+  # aws_autoscaling_group.asg-app will be created
+  + resource "aws_autoscaling_group" "asg-app" {
+      + arn                       = (known after apply)
+      + availability_zones        = (known after apply)
+      + default_cooldown          = (known after apply)
+      + desired_capacity          = 2
+      + force_delete              = true
+      + force_delete_warm_pool    = false
+      + health_check_grace_period = 300
+      + health_check_type         = "EC2"
+      + id                        = (known after apply)
+      + launch_configuration      = (known after apply)
+      + load_balancers            = (known after apply)
+      + max_size                  = 4
+      + metrics_granularity       = "1Minute"
+      + min_size                  = 2
+      + name                      = "asg-app"
+      + name_prefix               = (known after apply)
+      + predicted_capacity        = (known after apply)
+      + protect_from_scale_in     = false
+      + service_linked_role_arn   = (known after apply)
+      + target_group_arns         = (known after apply)
+      + vpc_zone_identifier       = (known after apply)
+      + wait_for_capacity_timeout = "10m"
+      + warm_pool_size            = (known after apply)
+
+      + tag {
+          + key                 = "Name"
+          + propagate_at_launch = true
+          + value               = "App Agent Instance"
+        }
+    }
+
+  # aws_autoscaling_group.asg-web will be created
+  + resource "aws_autoscaling_group" "asg-web" {
+      + arn                       = (known after apply)
+      + availability_zones        = (known after apply)
+      + default_cooldown          = (known after apply)
+      + desired_capacity          = 2
+      + force_delete              = true
+      + force_delete_warm_pool    = false
+      + health_check_grace_period = 300
+      + health_check_type         = "EC2"
+      + id                        = (known after apply)
+      + launch_configuration      = (known after apply)
+      + load_balancers            = (known after apply)
+      + max_size                  = 4
+      + metrics_granularity       = "1Minute"
+      + min_size                  = 2
+      + name                      = "asg-web"
+      + name_prefix               = (known after apply)
+      + predicted_capacity        = (known after apply)
+      + protect_from_scale_in     = false
+      + service_linked_role_arn   = (known after apply)
+      + target_group_arns         = (known after apply)
+      + vpc_zone_identifier       = (known after apply)
+      + wait_for_capacity_timeout = "10m"
+      + warm_pool_size            = (known after apply)
+
+      + tag {
+          + key                 = "Name"
+          + propagate_at_launch = true
+          + value               = "Web Agent Instance"
+        }
+    }
+
+  # aws_autoscaling_notification.asg-app_notifications will be created
+  + resource "aws_autoscaling_notification" "asg-app_notifications" {
+      + group_names   = (known after apply)
+      + id            = (known after apply)
+      + notifications = [
+          + "autoscaling:EC2_INSTANCE_LAUNCH",
+          + "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+          + "autoscaling:EC2_INSTANCE_TERMINATE",
+          + "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
+        ]
+      + topic_arn     = (known after apply)
+    }
+
+  # aws_autoscaling_notification.asg-web_notifications will be created
+  + resource "aws_autoscaling_notification" "asg-web_notifications" {
+      + group_names   = (known after apply)
+      + id            = (known after apply)
+      + notifications = [
+          + "autoscaling:EC2_INSTANCE_LAUNCH",
+          + "autoscaling:EC2_INSTANCE_LAUNCH_ERROR",
+          + "autoscaling:EC2_INSTANCE_TERMINATE",
+          + "autoscaling:EC2_INSTANCE_TERMINATE_ERROR",
+        ]
+      + topic_arn     = (known after apply)
+    }
+
+  # aws_autoscaling_policy.example[0] will be created
+  + resource "aws_autoscaling_policy" "example" {
+      + adjustment_type         = "ChangeInCapacity"
+      + arn                     = (known after apply)
+      + autoscaling_group_name  = "asg-web"
+      + cooldown                = 300
+      + enabled                 = true
+      + id                      = (known after apply)
+      + metric_aggregation_type = (known after apply)
+      + name                    = "asg-web_cpu_high"
+      + policy_type             = "SimpleScaling"
+      + scaling_adjustment      = 1
+    }
+
+  # aws_autoscaling_policy.example[1] will be created
+  + resource "aws_autoscaling_policy" "example" {
+      + adjustment_type         = "ChangeInCapacity"
+      + arn                     = (known after apply)
+      + autoscaling_group_name  = "asg-app"
+      + cooldown                = 300
+      + enabled                 = true
+      + id                      = (known after apply)
+      + metric_aggregation_type = (known after apply)
+      + name                    = "asg-app_cpu_high"
+      + policy_type             = "SimpleScaling"
+      + scaling_adjustment      = 1
+    }
+
+  # aws_cloudwatch_metric_alarm.example[0] will be created
+  + resource "aws_cloudwatch_metric_alarm" "example" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_description                     = "This metric triggers when CPU exceeds 80%"
+      + alarm_name                            = "asg-web_cpu_high"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "AutoScalingGroupName" = "asg-web"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "CPUUtilization"
+      + namespace                             = "AWS/EC2"
+      + ok_actions                            = (known after apply)
+      + period                                = 300
+      + statistic                             = "Average"
+      + tags_all                              = (known after apply)
+      + threshold                             = 80
+      + treat_missing_data                    = "missing"
+    }
+
+  # aws_cloudwatch_metric_alarm.example[1] will be created
+  + resource "aws_cloudwatch_metric_alarm" "example" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_description                     = "This metric triggers when CPU exceeds 80%"
+      + alarm_name                            = "asg-app_cpu_high"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "AutoScalingGroupName" = "asg-app"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "CPUUtilization"
+      + namespace                             = "AWS/EC2"
+      + ok_actions                            = (known after apply)
+      + period                                = 300
+      + statistic                             = "Average"
+      + tags_all                              = (known after apply)
+      + threshold                             = 80
+      + treat_missing_data                    = "missing"
+    }
+
+  # aws_db_instance.default will be created
+  + resource "aws_db_instance" "default" {
+      + address                               = (known after apply)
+      + allocated_storage                     = 20
+      + allow_major_version_upgrade           = false
+      + apply_immediately                     = false
+      + arn                                   = (known after apply)
+      + auto_minor_version_upgrade            = true
+      + availability_zone                     = (known after apply)
+      + backup_retention_period               = 1
+      + backup_target                         = (known after apply)
+      + backup_window                         = (known after apply)
+      + ca_cert_identifier                    = (known after apply)
+      + character_set_name                    = (known after apply)
+      + copy_tags_to_snapshot                 = false
+      + db_name                               = (known after apply)
+      + db_subnet_group_name                  = (known after apply)
+      + delete_automated_backups              = true
+      + endpoint                              = (known after apply)
+      + engine                                = "mysql"
+      + engine_version                        = "5.7"
+      + engine_version_actual                 = (known after apply)
+      + final_snapshot_identifier             = "true"
+      + hosted_zone_id                        = (known after apply)
+      + id                                    = (known after apply)
+      + identifier                            = (known after apply)
+      + identifier_prefix                     = "hotpotdb"
+      + instance_class                        = "db.t2.micro"
+      + iops                                  = (known after apply)
+      + kms_key_id                            = (known after apply)
+      + latest_restorable_time                = (known after apply)
+      + license_model                         = (known after apply)
+      + listener_endpoint                     = (known after apply)
+      + maintenance_window                    = (known after apply)
+      + master_user_secret                    = (known after apply)
+      + master_user_secret_kms_key_id         = (known after apply)
+      + monitoring_interval                   = 0
+      + monitoring_role_arn                   = (known after apply)
+      + multi_az                              = (known after apply)
+      + nchar_character_set_name              = (known after apply)
+      + network_type                          = (known after apply)
+      + option_group_name                     = (known after apply)
+      + parameter_group_name                  = (known after apply)
+      + password                              = (sensitive value)
+      + performance_insights_enabled          = false
+      + performance_insights_kms_key_id       = (known after apply)
+      + performance_insights_retention_period = (known after apply)
+      + port                                  = (known after apply)
+      + publicly_accessible                   = true
+      + replica_mode                          = (known after apply)
+      + replicas                              = (known after apply)
+      + resource_id                           = (known after apply)
+      + skip_final_snapshot                   = true
+      + snapshot_identifier                   = (known after apply)
+      + status                                = (known after apply)
+      + storage_throughput                    = (known after apply)
+      + storage_type                          = (known after apply)
+      + tags_all                              = (known after apply)
+      + timezone                              = (known after apply)
+      + username                              = "admin"
+      + vpc_security_group_ids                = (known after apply)
+    }
+
+  # aws_db_subnet_group.default will be created
+  + resource "aws_db_subnet_group" "default" {
+      + arn                     = (known after apply)
+      + description             = "Managed by Terraform"
+      + id                      = (known after apply)
+      + name                    = (known after apply)
+      + name_prefix             = (known after apply)
+      + subnet_ids              = (known after apply)
+      + supported_network_types = (known after apply)
+      + tags_all                = (known after apply)
+      + vpc_id                  = (known after apply)
+    }
+
+  # aws_eip.bastion-eip will be created
+  + resource "aws_eip" "bastion-eip" {
+      + allocation_id        = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = (known after apply)
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags                 = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-bastion-eip"
+        }
+      + tags_all             = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-bastion-eip"
+        }
+      + vpc                  = (known after apply)
+    }
+
+  # aws_eip.nat-eip will be created
+  + resource "aws_eip" "nat-eip" {
+      + allocation_id        = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = (known after apply)
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + tags                 = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-nat-eip"
+        }
+      + tags_all             = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-nat-eip"
+        }
+      + vpc                  = (known after apply)
+    }
+
+  # aws_eip_association.bastion-eip-association will be created
+  + resource "aws_eip_association" "bastion-eip-association" {
+      + allocation_id        = (known after apply)
+      + id                   = (known after apply)
+      + instance_id          = (known after apply)
+      + network_interface_id = (known after apply)
+      + private_ip_address   = (known after apply)
+      + public_ip            = (known after apply)
+    }
+
+  # aws_iam_instance_profile.dev-resources-iam-profile will be created
+  + resource "aws_iam_instance_profile" "dev-resources-iam-profile" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "ec2_profile"
+      + name_prefix = (known after apply)
+      + path        = "/"
+      + role        = "dev-ssm-role"
+      + tags_all    = (known after apply)
+      + unique_id   = (known after apply)
+    }
+
+  # aws_iam_role.dev-resources-iam-role will be created
+  + resource "aws_iam_role" "dev-resources-iam-role" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = {
+                  + Action    = "sts:AssumeRole"
+                  + Effect    = "Allow"
+                  + Principal = {
+                      + Service = "ec2.amazonaws.com"
+                    }
+                }
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + description           = "The role for the developer resources EC2"
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "dev-ssm-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "stack" = "test"
+        }
+      + tags_all              = {
+          + "stack" = "test"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # aws_iam_role_policy_attachment.dev-resources-ssm-policy will be created
+  + resource "aws_iam_role_policy_attachment" "dev-resources-ssm-policy" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      + role       = "dev-ssm-role"
+    }
+
+  # aws_instance.bastion-server will be created
+  + resource "aws_instance" "bastion-server" {
+      + ami                                  = "ami-059b01eb1dee1e15c"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = true
+      + availability_zone                    = (known after apply)
+      + cpu_core_count                       = (known after apply)
+      + cpu_threads_per_core                 = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "samcloud-dev-linux-ap-southeast-1"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = false
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-bastion"
+        }
+      + tags_all                             = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-bastion"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+    }
+
+  # aws_internet_gateway.gw will be created
+  + resource "aws_internet_gateway" "gw" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + tags     = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-igw"
+        }
+      + tags_all = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-igw"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # aws_key_pair.key_pair will be created
+  + resource "aws_key_pair" "key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "samcloud-dev-linux-ap-southeast-1"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = (known after apply)
+      + tags_all        = (known after apply)
+    }
+
+  # aws_launch_configuration.agent-lc-app will be created
+  + resource "aws_launch_configuration" "agent-lc-app" {
+      + arn                         = (known after apply)
+      + associate_public_ip_address = (known after apply)
+      + ebs_optimized               = (known after apply)
+      + enable_monitoring           = true
+      + iam_instance_profile        = "ec2_profile"
+      + id                          = (known after apply)
+      + image_id                    = "ami-0a481e6d13af82399"
+      + instance_type               = "t2.micro"
+      + key_name                    = "samcloud-dev-linux-ap-southeast-1"
+      + name                        = (known after apply)
+      + name_prefix                 = "agent-lc-app-"
+      + security_groups             = (known after apply)
+      + user_data                   = "2a442156309cf7cc22434e9e421e88de5af8bbdc"
+
+      + root_block_device {
+          + delete_on_termination = true
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_size           = 8
+          + volume_type           = "gp2"
+        }
+    }
+
+  # aws_launch_configuration.agent-lc-web will be created
+  + resource "aws_launch_configuration" "agent-lc-web" {
+      + arn                         = (known after apply)
+      + associate_public_ip_address = (known after apply)
+      + ebs_optimized               = (known after apply)
+      + enable_monitoring           = true
+      + iam_instance_profile        = "ec2_profile"
+      + id                          = (known after apply)
+      + image_id                    = "ami-0a481e6d13af82399"
+      + instance_type               = "t2.micro"
+      + key_name                    = "samcloud-dev-linux-ap-southeast-1"
+      + name                        = (known after apply)
+      + name_prefix                 = "agent-lc-web-"
+      + security_groups             = (known after apply)
+      + user_data                   = "3738c541a3e76cdfe57d9421fad55fa97ae1a012"
+
+      + root_block_device {
+          + delete_on_termination = true
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + throughput            = (known after apply)
+          + volume_size           = 8
+          + volume_type           = "gp2"
+        }
+    }
+
+  # aws_lb.alb-app will be created
+  + resource "aws_lb" "alb-app" {
+      + arn                                         = (known after apply)
+      + arn_suffix                                  = (known after apply)
+      + desync_mitigation_mode                      = "defensive"
+      + dns_name                                    = (known after apply)
+      + drop_invalid_header_fields                  = false
+      + enable_deletion_protection                  = false
+      + enable_http2                                = false
+      + enable_tls_version_and_cipher_suite_headers = false
+      + enable_waf_fail_open                        = false
+      + enable_xff_client_port                      = false
+      + id                                          = (known after apply)
+      + idle_timeout                                = 60
+      + internal                                    = true
+      + ip_address_type                             = (known after apply)
+      + load_balancer_type                          = "application"
+      + name                                        = "samcloud-dev-alb-app"
+      + preserve_host_header                        = false
+      + security_groups                             = (known after apply)
+      + subnets                                     = (known after apply)
+      + tags                                        = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-app"
+        }
+      + tags_all                                    = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-app"
+        }
+      + vpc_id                                      = (known after apply)
+      + xff_header_processing_mode                  = "append"
+      + zone_id                                     = (known after apply)
+    }
+
+  # aws_lb.alb-web will be created
+  + resource "aws_lb" "alb-web" {
+      + arn                                         = (known after apply)
+      + arn_suffix                                  = (known after apply)
+      + desync_mitigation_mode                      = "defensive"
+      + dns_name                                    = (known after apply)
+      + drop_invalid_header_fields                  = false
+      + enable_deletion_protection                  = false
+      + enable_http2                                = false
+      + enable_tls_version_and_cipher_suite_headers = false
+      + enable_waf_fail_open                        = false
+      + enable_xff_client_port                      = false
+      + id                                          = (known after apply)
+      + idle_timeout                                = 60
+      + internal                                    = true
+      + ip_address_type                             = (known after apply)
+      + load_balancer_type                          = "application"
+      + name                                        = "samcloud-dev-alb-web"
+      + preserve_host_header                        = false
+      + security_groups                             = (known after apply)
+      + subnets                                     = (known after apply)
+      + tags                                        = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-web"
+        }
+      + tags_all                                    = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-web"
+        }
+      + vpc_id                                      = (known after apply)
+      + xff_header_processing_mode                  = "append"
+      + zone_id                                     = (known after apply)
+    }
+
+  # aws_lb_listener.alb-app-listener-http will be created
+  + resource "aws_lb_listener" "alb-app-listener-http" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + load_balancer_arn = (known after apply)
+      + port              = 80
+      + protocol          = "HTTP"
+      + ssl_policy        = (known after apply)
+      + tags_all          = (known after apply)
+
+      + default_action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+    }
+
+  # aws_lb_listener.alb-web-listener-http will be created
+  + resource "aws_lb_listener" "alb-web-listener-http" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + load_balancer_arn = (known after apply)
+      + port              = 80
+      + protocol          = "HTTP"
+      + ssl_policy        = (known after apply)
+      + tags_all          = (known after apply)
+
+      + default_action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+    }
+
+  # aws_lb_target_group.alb-app-target-group-http will be created
+  + resource "aws_lb_target_group" "alb-app-target-group-http" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = false
+      + deregistration_delay               = "60"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "samcloud-dev-app-tg-http"
+      + port                               = 80
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags_all                           = (known after apply)
+      + target_type                        = "instance"
+      + vpc_id                             = (known after apply)
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 3
+          + interval            = 30
+          + matcher             = "200,301,302"
+          + path                = "/"
+          + port                = "80"
+          + protocol            = "HTTP"
+          + timeout             = 10
+          + unhealthy_threshold = 3
+        }
+
+      + stickiness {
+          + cookie_duration = 86400
+          + enabled         = true
+          + type            = "lb_cookie"
+        }
+    }
+
+  # aws_lb_target_group.alb-web-target-group-http will be created
+  + resource "aws_lb_target_group" "alb-web-target-group-http" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = false
+      + deregistration_delay               = "60"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "samcloud-dev-web-tg-http"
+      + port                               = 80
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags_all                           = (known after apply)
+      + target_type                        = "instance"
+      + vpc_id                             = (known after apply)
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 3
+          + interval            = 30
+          + matcher             = "200,301,302"
+          + path                = "/"
+          + port                = "80"
+          + protocol            = "HTTP"
+          + timeout             = 10
+          + unhealthy_threshold = 3
+        }
+
+      + stickiness {
+          + cookie_duration = 86400
+          + enabled         = true
+          + type            = "lb_cookie"
+        }
+    }
+
+  # aws_nat_gateway.nat will be created
+  + resource "aws_nat_gateway" "nat" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-nat-gateway"
+        }
+      + tags_all                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-nat-gateway"
+        }
+    }
+
+  # aws_route53_record.alb-web-a-record will be created
+  + resource "aws_route53_record" "alb-web-a-record" {
+      + allow_overwrite = (known after apply)
+      + fqdn            = (known after apply)
+      + id              = (known after apply)
+      + name            = "internallb.samhotpot.com"
+      + type            = "A"
+      + zone_id         = "Z07661182BIQS4UWCLXY9"
+
+      + alias {
+          + evaluate_target_health = true
+          + name                   = (known after apply)
+          + zone_id                = (known after apply)
+        }
+    }
+
+  # aws_route53_record.alb-web-certificate-validation-record["internallb.samhotpot.com"] will be created
+  + resource "aws_route53_record" "alb-web-certificate-validation-record" {
+      + allow_overwrite = true
+      + fqdn            = (known after apply)
+      + id              = (known after apply)
+      + name            = (known after apply)
+      + records         = (known after apply)
+      + ttl             = 60
+      + type            = (known after apply)
+      + zone_id         = "Z07661182BIQS4UWCLXY9"
+    }
+
+  # aws_route_table.private-rt will be created
+  + resource "aws_route_table" "private-rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + carrier_gateway_id         = ""
+              + cidr_block                 = "0.0.0.0/0"
+              + core_network_arn           = ""
+              + destination_prefix_list_id = ""
+              + egress_only_gateway_id     = ""
+              + gateway_id                 = (known after apply)
+              + ipv6_cidr_block            = ""
+              + local_gateway_id           = ""
+              + nat_gateway_id             = ""
+              + network_interface_id       = ""
+              + transit_gateway_id         = ""
+              + vpc_endpoint_id            = ""
+              + vpc_peering_connection_id  = ""
+            },
+        ]
+      + tags             = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-private-subnet-rt"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-private-subnet-rt"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table.public-rt will be created
+  + resource "aws_route_table" "public-rt" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + route            = [
+          + {
+              + carrier_gateway_id         = ""
+              + cidr_block                 = "0.0.0.0/0"
+              + core_network_arn           = ""
+              + destination_prefix_list_id = ""
+              + egress_only_gateway_id     = ""
+              + gateway_id                 = (known after apply)
+              + ipv6_cidr_block            = ""
+              + local_gateway_id           = ""
+              + nat_gateway_id             = ""
+              + network_interface_id       = ""
+              + transit_gateway_id         = ""
+              + vpc_endpoint_id            = ""
+              + vpc_peering_connection_id  = ""
+            },
+        ]
+      + tags             = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-public-subnet-rt"
+        }
+      + tags_all         = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-public-subnet-rt"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # aws_route_table_association.private-rt-1-association will be created
+  + resource "aws_route_table_association" "private-rt-1-association" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.private-rt-2-association will be created
+  + resource "aws_route_table_association" "private-rt-2-association" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_route_table_association.public-rt-association will be created
+  + resource "aws_route_table_association" "public-rt-association" {
+      + id             = (known after apply)
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # aws_security_group.alb-app-sg will be created
+  + resource "aws_security_group" "alb-app-sg" {
+      + arn                    = (known after apply)
+      + description            = "Allow app traffic to the load balancer"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 443
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+        ]
+      + name                   = "samcloud-dev-alb-app-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-app-sg"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-app-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group.alb-web-sg will be created
+  + resource "aws_security_group" "alb-web-sg" {
+      + arn                    = (known after apply)
+      + description            = "Allow web traffic to the load balancer"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 443
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+        ]
+      + name                   = "samcloud-dev-alb-web-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-web-sg"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-alb-web-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group.bastion-sg will be created
+  + resource "aws_security_group" "bastion-sg" {
+      + arn                    = (known after apply)
+      + description            = "Allow incoming connections"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow incoming RDP connections"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "samcloud-dev-bastion-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-bastion-sg"
+        }
+      + tags_all               = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-bastion-sg"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group.rds-sg will be created
+  + resource "aws_security_group" "rds-sg" {
+      + arn                    = (known after apply)
+      + description            = "allows 3306"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "10.11.0.0/16",
+                ]
+              + description      = ""
+              + from_port        = 3306
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 3306
+            },
+        ]
+      + name                   = (known after apply)
+      + name_prefix            = "Allow 3306"
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_security_group.websg will be created
+  + resource "aws_security_group" "websg" {
+      + arn                    = (known after apply)
+      + description            = "Allow http inbound traffic"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = ""
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+        ]
+      + name                   = "allow_http"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+  # aws_sns_topic.myasg_sns_topic will be created
+  + resource "aws_sns_topic" "myasg_sns_topic" {
+      + arn                         = (known after apply)
+      + content_based_deduplication = false
+      + fifo_topic                  = false
+      + id                          = (known after apply)
+      + name                        = "myasg-sns-topic"
+      + name_prefix                 = (known after apply)
+      + owner                       = (known after apply)
+      + policy                      = (known after apply)
+      + signature_version           = (known after apply)
+      + tags_all                    = (known after apply)
+      + tracing_config              = (known after apply)
+    }
+
+  # aws_sns_topic_subscription.myasg_sns_topic_subscription will be created
+  + resource "aws_sns_topic_subscription" "myasg_sns_topic_subscription" {
+      + arn                             = (known after apply)
+      + confirmation_timeout_in_minutes = 1
+      + confirmation_was_authenticated  = (known after apply)
+      + endpoint                        = "sam.cheng.sg@gmail.com"
+      + endpoint_auto_confirms          = false
+      + filter_policy_scope             = (known after apply)
+      + id                              = (known after apply)
+      + owner_id                        = (known after apply)
+      + pending_confirmation            = (known after apply)
+      + protocol                        = "email"
+      + raw_message_delivery            = false
+      + topic_arn                       = (known after apply)
+    }
+
+  # aws_subnet.private-subnet-1 will be created
+  + resource "aws_subnet" "private-subnet-1" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-private-subnet-1"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-private-subnet-1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.private-subnet-2 will be created
+  + resource "aws_subnet" "private-subnet-2" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-private-subnet-2"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-private-subnet-2"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.public-subnet will be created
+  + resource "aws_subnet" "public-subnet" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.4.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-public-subnet"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-public-subnet"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.rds-subnet-1 will be created
+  + resource "aws_subnet" "rds-subnet-1" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.5.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-rds-subnet-1"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-rds-subnet-1"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.rds-subnet-2 will be created
+  + resource "aws_subnet" "rds-subnet-2" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.6.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-rds-subnet-2"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-rds-subnet-2"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_subnet.rds-subnet-3 will be created
+  + resource "aws_subnet" "rds-subnet-3" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "ap-southeast-1c"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.11.7.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + tags                                           = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-rds-subnet-3"
+        }
+      + tags_all                                       = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-rds-subnet-3"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # aws_vpc.vpc will be created
+  + resource "aws_vpc" "vpc" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.11.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + tags                                 = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-vpc"
+        }
+      + tags_all                             = {
+          + "Environment" = "dev"
+          + "Name"        = "samcloud-dev-vpc"
+        }
+    }
+
+  # local_file.ssh_key will be created
+  + resource "local_file" "ssh_key" {
+      + content              = (sensitive value)
+      + content_base64sha256 = (known after apply)
+      + content_base64sha512 = (known after apply)
+      + content_md5          = (known after apply)
+      + content_sha1         = (known after apply)
+      + content_sha256       = (known after apply)
+      + content_sha512       = (known after apply)
+      + directory_permission = "0777"
+      + file_permission      = "0777"
+      + filename             = "samcloud-dev-linux-ap-southeast-1.pem"
+      + id                   = (known after apply)
+    }
+
+  # tls_private_key.key_pair will be created
+  + resource "tls_private_key" "key_pair" {
+      + algorithm                     = "RSA"
+      + ecdsa_curve                   = "P224"
+      + id                            = (known after apply)
+      + private_key_openssh           = (sensitive value)
+      + private_key_pem               = (sensitive value)
+      + private_key_pem_pkcs8         = (sensitive value)
+      + public_key_fingerprint_md5    = (known after apply)
+      + public_key_fingerprint_sha256 = (known after apply)
+      + public_key_openssh            = (known after apply)
+      + public_key_pem                = (known after apply)
+      + rsa_bits                      = 4096
+    }
+
+Plan: 54 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + bastion_server_instance_id         = (known after apply)
+  + bastion_server_instance_private_ip = (known after apply)
+  + bastion_server_instance_public_dns = (known after apply)
+  + bastion_server_instance_public_ip  = (known after apply)
+  + lb_app_dns_name                    = "https://internallb.samhotpot.com"
+
+─────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
