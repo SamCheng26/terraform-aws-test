@@ -10,26 +10,19 @@ What will be deployed:
   
 1. VPC
 Subnets:
-private-subnet-1 
-private-subnet-2 
-rds-subnet-1
-rds-subnet-2
-rds-subnet-3
+private-subnet-1, private-subnet-2 
+rds-subnet-1, rds-subnet-2, rds-subnet-3
 public-subnet (for basion host and verification purpose)
 
-route-table
-route-table-association
+route-table, route-table-association
 
 2. ASG
-asg-web 
-asg-app
-launch-configuration for asg-web
-launch-configuration for asg-app
+asg-web, asg-app
+launch-configuration for asg-web, launch-configuration for asg-app
 #both ASG are crossing two AZs. 
 
 3. ALB
-ALB-Web #internal ALB.
-ALB-App #internal ALB
+ALB-Web #internal ALB, ALB-App #internal ALB
 Register DNS Records in Route 53
 Create an SSL certificate using AWS Certificate Manager
   
