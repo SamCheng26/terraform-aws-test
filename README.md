@@ -3,17 +3,18 @@ A demostration of my work done.
 ![architect diagram](https://github.com/SamCheng26/terraform-aws-test/assets/65500466/07dd8096-9127-47dc-adc3-a142db239ea1)
 
 
-Deploy EC2 instances in multiple AZs using Auto Scaling Groups, with an INTERMAL Application Load Balancer and ACM:
+What have been defined:
   
 1. VPC Subnets:
 private-subnet-1, 
 private-subnet-2, 
+private-subnet-3,
 rds-subnet-1,
 rds-subnet-2,
 rds-subnet-3,
 public-subnet (for basion host and verification purpose),
-route-table,
-route-table-association
+route-tables,
+route-table-associations
 
 2. ASG:
 asg-web, 
