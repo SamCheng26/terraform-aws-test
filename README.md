@@ -3,9 +3,7 @@ A demostration of my work done.
 ![architect diagram](https://github.com/SamCheng26/terraform-aws-test/assets/65500466/07dd8096-9127-47dc-adc3-a142db239ea1)
 
 
-Deploy EC2 instances in multiple AZs using Auto Scaling Groups, with an INTERMAL Application Load Balancer and ACM.
-
-What will be deployed:
+Deploy EC2 instances in multiple AZs using Auto Scaling Groups, with an INTERMAL Application Load Balancer and ACM:
   
 1. VPC Subnets:
 private-subnet-1, 
