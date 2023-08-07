@@ -14,7 +14,6 @@ rds-subnet-1,
 rds-subnet-2,
 rds-subnet-3,
 public-subnet (for basion host and verification purpose),
-
 route-table,
 route-table-association
 
